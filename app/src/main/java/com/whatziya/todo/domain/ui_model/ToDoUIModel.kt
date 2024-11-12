@@ -9,5 +9,5 @@ data class ToDoUIModel(
     val deadline : Date? = null,
     val isCompleted : Boolean,
     val createdAt : Date,
-    val modifiedAt : Date
+    var modifiedAt : Date
 )

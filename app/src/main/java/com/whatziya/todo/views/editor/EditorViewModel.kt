@@ -10,56 +10,55 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import java.util.Date
 import javax.inject.Inject
+import java.util.UUID
 
 @HiltViewModel
-class EditorViewModel @Inject constructor(
-    private val editorUseCase: LocalEditorUseCase
+class TaskEditorViewModel @Inject constructor(
+    private val taskEditorUseCase: LocalEditorUseCase
 ) : ViewModel() {
 
-    val task = mutableStateOf<ToDoUIModel?>(null)
-    var importance = mutableIntStateOf(0) // Default importance level
+    var importanceLevel = mutableIntStateOf(0)
+    val taskData = mutableStateOf(
+        ToDoUIModel(
+            id = generateTaskId(),
+            text = "",
+            importance = importanceLevel.intValue,
+            deadline = null,
+            isCompleted = false,
+            createdAt = Date(System.currentTimeMillis()),
+            modifiedAt = Date(System.currentTimeMillis())
+        )
+    )
 
-    // Load task if editing, otherwise create a new task
-    fun loadTask(taskId: String?) {
-        if (taskId != null) {
-            viewModelScope.launch {
-                editorUseCase.getItemById(taskId).collect { task.value = it }
-            }
-        } else {
-            // Initialize new task
-            task.value = ToDoUIModel(
-                id = generateUniqueId(), // Placeholder for unique ID generation
-                text = "",
-                importance = importance.intValue,
-                deadline = null,
-                isCompleted = false,
-                createdAt = Date(),
-                modifiedAt = Date()
-            )
+    fun loadTaskById(taskId: String) {
+        viewModelScope.launch {
+            taskEditorUseCase.getItemById(taskId).collect { taskData.value = it }
         }
     }
 
-    fun saveTask() {
-        task.value?.let {
-            it.importance = importance.intValue
+    fun createTask() {
+        taskData.value.let {
+            it.importance = importanceLevel.intValue
             viewModelScope.launch {
-                if (isNewTask(it)) {
-                    editorUseCase.insertItem(it)
-                } else {
-                    editorUseCase.updateItem(it)
-                }
+                taskEditorUseCase.insertItem(it)
             }
         }
     }
 
-    fun deleteTask() {
-        task.value?.let {
-            viewModelScope.launch { editorUseCase.deleteItem(it) }
+    fun modifyTask(task: ToDoUIModel) {
+        task.importance = importanceLevel.intValue
+        viewModelScope.launch {
+            taskEditorUseCase.updateItem(task)
+        }
+    }
+
+    fun removeTask() {
+        taskData.value.let {
+            viewModelScope.launch { taskEditorUseCase.deleteItem(it) }
         }
     }
 
     private fun isNewTask(task: ToDoUIModel) = task.createdAt == task.modifiedAt
 
-    // Generate unique ID for new tasks (can be UUID)
-    private fun generateUniqueId() = java.util.UUID.randomUUID().toString()
+    private fun generateTaskId() = UUID.randomUUID().toString()
 }

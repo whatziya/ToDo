@@ -16,13 +16,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun DeleteTaskButton(onDelete: () -> Unit) {
+fun DeleteTaskButton(onDeleteTask: () -> Unit) {
     Row(
         modifier = Modifier
             .padding(8.dp)
             .height(72.dp)
             .fillMaxWidth()
-            .clickable { onDelete() },
+            .clickable { onDeleteTask() },
         verticalAlignment = Alignment.CenterVertically
     ) {
         Icon(

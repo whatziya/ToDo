@@ -1,60 +1,63 @@
 package com.whatziya.todo.views.home
 
+import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateOf
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.whatziya.todo.domain.ui_model.ToDoUIModel
 import com.whatziya.todo.domain.usecase.todo.LocalHomeUseCase
 import com.whatziya.todo.preferences.PreferencesProvider
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val prefsProvider: PreferencesProvider,
-    private val useCase: LocalHomeUseCase
+    private val preferencesProvider: PreferencesProvider,
+    private val homeUseCase: LocalHomeUseCase
 ) : ViewModel() {
 
-    private val _toDoItems = MutableStateFlow<List<ToDoUIModel>>(emptyList())
-    val toDoItems: StateFlow<List<ToDoUIModel>> get() = _toDoItems
+    private val _todoItems = MutableLiveData<List<ToDoUIModel>>()
+    val todoItems: LiveData<List<ToDoUIModel>> get() = _todoItems
+
+    private val _isHideCompletedEnabled = mutableStateOf(false)
+    val isHideCompletedEnabled: State<Boolean> = _isHideCompletedEnabled
 
     init {
         viewModelScope.launch {
-            useCase.getAllItems()
-                .collect { toDoEntities ->
-                    if(prefsProvider.hideCompleted){
-                        _toDoItems.value = toDoEntities.filter { !it.isCompleted }
+            homeUseCase.getAllItems()
+                .collect { items ->
+                    if (_isHideCompletedEnabled.value) {
+                        _todoItems.value = items.filter { !it.isCompleted }
                     } else {
-                        _toDoItems.value = toDoEntities
+                        _todoItems.value = items
                     }
                 }
         }
     }
 
-    fun updateItem(item: ToDoUIModel) = viewModelScope.launch {
-        useCase.updateItem(item)
+    fun updateTodoItem(item: ToDoUIModel) = viewModelScope.launch {
+        homeUseCase.updateItem(item)
     }
 
-    fun deleteItemById(id: String) = viewModelScope.launch {
-        useCase.deleteItemById(id)
+    fun deleteTodoItemById(id: String) = viewModelScope.launch {
+        homeUseCase.deleteItemById(id)
     }
 
-    fun setHideCompleted(hideCompleted: Boolean) = viewModelScope.launch {
-        prefsProvider.hideCompleted = hideCompleted
+    fun toggleHideCompleted() {
+        viewModelScope.launch {
+            _isHideCompletedEnabled.value = !_isHideCompletedEnabled.value.also {
+                preferencesProvider.hideCompleted = it
+            }
+        }
     }
 
-    fun getHideCompleted() = prefsProvider.hideCompleted
+    fun getHideCompletedPreference() = preferencesProvider.hideCompleted
 
-    // Add a function to mark a task as completed
-    fun markTaskComplete(task: ToDoUIModel) {
+    fun markTodoItemAsCompleted(task: ToDoUIModel) {
         val updatedTask = task.copy(isCompleted = true)
-        updateItem(updatedTask)
-    }
-
-    // Add a function to delete a task
-    fun deleteTask(id: String) {
-        deleteItemById(id)
+        updateTodoItem(updatedTask)
     }
 }

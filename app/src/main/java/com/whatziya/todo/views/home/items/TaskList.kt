@@ -13,19 +13,31 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.whatziya.todo.domain.ui_model.ToDoUIModel
 
 @Composable
-fun TaskList(
-    todoItems: List<ToDoUIModel>,
-    hideCompleted: Boolean,
-    onItemClick: (id: String) -> Unit,
+fun TaskListView(
+    tasks: List<ToDoUIModel>,
+    isHideCompletedEnabled: Boolean,
+    onTaskClick: (id: String) -> Unit,
     paddingValues: PaddingValues,
-    onAddNewItemClick: () -> Unit,
-    onMarkComplete: (ToDoUIModel) -> Unit // Pass the callback
+    onAddNewTaskClick: () -> Unit,
+    onMarkTaskAsComplete: (ToDoUIModel) -> Unit
 ) {
+    val filteredTasks = remember(isHideCompletedEnabled, tasks) {
+        derivedStateOf {
+            if (isHideCompletedEnabled) {
+                tasks.filter { !it.isCompleted }
+            } else {
+                tasks
+            }
+        }
+    }
+
     Surface(
         modifier = Modifier
             .padding(paddingValues)
@@ -37,14 +49,11 @@ fun TaskList(
         LazyColumn {
             item { Spacer(modifier = Modifier.padding(top = 16.dp)) }
 
-            val filteredItems =
-                if (hideCompleted) todoItems.filter { !it.isCompleted } else todoItems
-
-            items(filteredItems.size) { index ->
+            items(filteredTasks.value.size) { index ->
                 ToDoContainer(
-                    data = filteredItems[index],
-                    onClick = onItemClick,
-                    onMarkComplete = onMarkComplete // Pass the callback to ToDoContainer
+                    data = filteredTasks.value[index],
+                    onClick = onTaskClick,
+                    onMarkComplete = onMarkTaskAsComplete
                 )
             }
 
@@ -52,11 +61,11 @@ fun TaskList(
                 Box(
                     Modifier
                         .fillMaxWidth()
-                        .clickable { onAddNewItemClick() }
+                        .clickable { onAddNewTaskClick() }
                         .padding(start = 56.dp, top = 14.dp, bottom = 24.dp)
                 ) {
                     Text(
-                        "Новое",
+                        "New Task",
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onTertiary
                     )

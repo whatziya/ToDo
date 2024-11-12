@@ -30,11 +30,11 @@ import java.util.Locale
 fun ToDoContainer(
     data: ToDoUIModel,
     onClick: (taskId: String) -> Unit,
-    onMarkComplete: (ToDoUIModel) -> Unit // New callback to mark the task as completed
+    onMarkComplete: (ToDoUIModel) -> Unit
 ){
     Row(
         modifier = Modifier
-            .clickable { onClick(data.id) }
+            .clickable { onClick(data.id)}
             .fillMaxWidth()
             .height(72.dp)
             .padding(horizontal = 8.dp),
@@ -43,22 +43,21 @@ fun ToDoContainer(
         Checkbox(
             checked = data.isCompleted,
             onCheckedChange = { isChecked ->
-                // Update the task completion status in the ViewModel
                 onMarkComplete(data.copy(isCompleted = isChecked))
             },
-            enabled = !data.isCompleted, // Disable checkbox if task is already completed
+            enabled = !data.isCompleted,
             colors = if (data.isCompleted) {
                 CheckboxColors(
                     checkedCheckmarkColor = Color.White,
                     uncheckedCheckmarkColor = Color.Transparent,
-                    checkedBoxColor = MaterialTheme.colorScheme.secondary, // yashil rang
+                    checkedBoxColor = MaterialTheme.colorScheme.secondary,
                     uncheckedBoxColor = Color.Transparent,
-                    disabledCheckedBoxColor = MaterialTheme.colorScheme.secondary, // yashil rang
+                    disabledCheckedBoxColor = MaterialTheme.colorScheme.secondary,
                     disabledUncheckedBoxColor = Color.Transparent,
                     disabledIndeterminateBoxColor = Color.Transparent,
-                    checkedBorderColor = MaterialTheme.colorScheme.secondary, // yashil rang
+                    checkedBorderColor = MaterialTheme.colorScheme.secondary,
                     uncheckedBorderColor = Color.Transparent,
-                    disabledBorderColor = MaterialTheme.colorScheme.secondary, // yashil rang
+                    disabledBorderColor = MaterialTheme.colorScheme.secondary,
                     disabledUncheckedBorderColor = Color.Transparent,
                     disabledIndeterminateBorderColor = Color.Transparent
                 )
@@ -72,7 +71,7 @@ fun ToDoContainer(
                     disabledUncheckedBoxColor = Color.Transparent,
                     disabledIndeterminateBoxColor = Color.Transparent,
                     checkedBorderColor = Color.Transparent,
-                    uncheckedBorderColor = MaterialTheme.colorScheme.onBackground, // kulrang
+                    uncheckedBorderColor = MaterialTheme.colorScheme.onBackground,
                     disabledBorderColor = Color.Transparent,
                     disabledUncheckedBorderColor = Color.Transparent,
                     disabledIndeterminateBorderColor = Color.Transparent
@@ -82,12 +81,12 @@ fun ToDoContainer(
                     checkedCheckmarkColor = Color.Transparent,
                     uncheckedCheckmarkColor = Color.Transparent,
                     checkedBoxColor = Color.Transparent,
-                    uncheckedBoxColor = Color(0xFFFF7B70), // qizil rang
+                    uncheckedBoxColor = Color(0xFFFF7B70),
                     disabledCheckedBoxColor = Color.Transparent,
                     disabledUncheckedBoxColor = Color.Transparent,
                     disabledIndeterminateBoxColor = Color.Transparent,
                     checkedBorderColor = Color.Transparent,
-                    uncheckedBorderColor = MaterialTheme.colorScheme.error, // qizil rang
+                    uncheckedBorderColor = MaterialTheme.colorScheme.error,
                     disabledBorderColor = Color.Transparent,
                     disabledUncheckedBorderColor = Color.Transparent,
                     disabledIndeterminateBorderColor = Color.Transparent

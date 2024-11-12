@@ -7,7 +7,6 @@ import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.SegmentedButtonDefaults.Icon
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
@@ -18,14 +17,14 @@ import androidx.compose.material3.Icon
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun EditorTopAppBar(onBack: () -> Unit, onSave: () -> Unit) {
+fun EditorTopAppBar(onNavigateBack: () -> Unit, onSaveTask: () -> Unit) {
     TopAppBar(
         colors = TopAppBarDefaults.topAppBarColors(
             containerColor = MaterialTheme.colorScheme.background
         ),
         title = {},
         navigationIcon = {
-            IconButton(onClick = onBack) {
+            IconButton(onClick = onNavigateBack) {
                 Icon(
                     imageVector = Icons.Default.Close,
                     contentDescription = null,
@@ -40,7 +39,7 @@ fun EditorTopAppBar(onBack: () -> Unit, onSave: () -> Unit) {
                 style = MaterialTheme.typography.labelLarge,
                 modifier = Modifier
                     .padding(16.dp)
-                    .clickable { onSave() }
+                    .clickable { onSaveTask() }
             )
         }
     )

@@ -9,9 +9,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 
 @Composable
-fun AddTaskFab(onAddNewToDoClick: () -> Unit){
+fun AddTaskButton(onAddNewTaskClick: () -> Unit) {
     FloatingActionButton(
-        onClick = onAddNewToDoClick,
+        onClick = onAddNewTaskClick,
         containerColor = MaterialTheme.colorScheme.primary,
         shape = MaterialTheme.shapes.extraLarge,
     ) {

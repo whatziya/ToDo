@@ -42,7 +42,8 @@ fun TaskInputField(
     taskText: String,
     onTextChange: (String) -> Unit
 ) {
-    var textState by remember { mutableStateOf(TextFieldValue(taskText)) }
+
+    var textState by remember { mutableStateOf(TextFieldValue(text = taskText)) }
 
     BasicTextField(
         value = textState,
@@ -66,7 +67,7 @@ fun TaskInputField(
                     color = Color.Gray
                 )
             }
-            innerTextField() // Draws the actual text field content
+            innerTextField()
         }
     )
 }

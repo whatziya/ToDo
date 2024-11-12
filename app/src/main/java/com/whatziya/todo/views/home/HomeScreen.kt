@@ -5,16 +5,13 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.whatziya.todo.views.home.items.TasksTopAppBar
-import com.whatziya.todo.views.home.items.AddTaskFab
-import com.whatziya.todo.views.home.items.TaskList
-
+import com.whatziya.todo.views.home.items.AddTaskButton
+import com.whatziya.todo.views.home.items.HomeTopAppBar
+import com.whatziya.todo.views.home.items.TaskListView
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -25,30 +22,33 @@ fun HomeScreen(
 ) {
     val topAppBarScrollBehavior =
         TopAppBarDefaults.exitUntilCollapsedScrollBehavior(rememberTopAppBarState())
-    var hideCompleted by rememberSaveable { mutableStateOf(viewModel.getHideCompleted()) }
-    val todoItems by viewModel.toDoItems.collectAsState()
+    val hideCompletedEnabled = viewModel.isHideCompletedEnabled
+    val tasks by viewModel.todoItems.observeAsState(emptyList())
+
+    LaunchedEffect(hideCompletedEnabled.value) { }
+
     Scaffold(
         topBar = {
-            TasksTopAppBar(
+            HomeTopAppBar(
                 topAppBarScrollBehavior,
-                todoItems.size,
-                hideCompleted,
-                onToggleShowCompleted = {
-                    hideCompleted = !hideCompleted
-                    viewModel.setHideCompleted(hideCompleted)
-                })
+                tasks.filter { it.isCompleted }.size,
+                hideCompletedEnabled.value,
+                onToggleHideCompleted = {
+                    viewModel.toggleHideCompleted()
+                }
+            )
         },
         floatingActionButton = {
-            AddTaskFab(onAddNewItemClick)
+            AddTaskButton(onAddNewItemClick)
         }
     ) { paddingValues ->
-        TaskList(
-            todoItems = todoItems,
-            hideCompleted = viewModel.getHideCompleted(),
-            onItemClick = onItemClick,
+        TaskListView(
+            tasks = tasks,
+            isHideCompletedEnabled = hideCompletedEnabled.value,
+            onTaskClick = onItemClick,
             paddingValues = paddingValues,
-            onAddNewItemClick = onAddNewItemClick,
-            onMarkComplete = { task -> viewModel.markTaskComplete(task) } // Pass the callback
+            onAddNewTaskClick = onAddNewItemClick,
+            onMarkTaskAsComplete = { task -> viewModel.markTodoItemAsCompleted(task) }
         )
     }
 }

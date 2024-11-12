@@ -21,13 +21,12 @@ import com.whatziya.todo.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TasksTopAppBar(
+fun HomeTopAppBar(
     topAppBarScrollBehavior: TopAppBarScrollBehavior,
-    listSize: Int,
-    hideCompleted: Boolean,
-    onToggleShowCompleted: () -> Unit
+    completedTaskCount: Int,
+    isHideCompletedEnabled: Boolean,
+    onToggleHideCompleted: () -> Unit
 ) {
-
     val topAppBarExpanded = topAppBarScrollBehavior.state.collapsedFraction == 0f
     val topAppBarCollapsed = topAppBarScrollBehavior.state.collapsedFraction == 1f
 
@@ -42,23 +41,23 @@ fun TasksTopAppBar(
                 Row {
                     Column(Modifier.padding(start = 56.dp).weight(1f)) {
                         Text(
-                            "Мои дела",
+                            "My Tasks",
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis,
                             style = MaterialTheme.typography.titleLarge
                         )
                         if (topAppBarExpanded) {
                             Text(
-                                "Выполнено - $listSize",
+                                "Completed - $completedTaskCount",
                                 style = MaterialTheme.typography.bodyMedium,
                                 color = MaterialTheme.colorScheme.onTertiary
                             )
                         }
                     }
                     if (topAppBarExpanded) {
-                        IconButton(onClick = onToggleShowCompleted, Modifier.padding(end = 8.dp)) {
+                        IconButton(onClick = onToggleHideCompleted, Modifier.padding(end = 8.dp)) {
                             Icon(
-                                painter = if (hideCompleted) painterResource(R.drawable.ic_invisible) else painterResource(R.drawable.ic_visible),
+                                painter = if (isHideCompletedEnabled) painterResource(R.drawable.ic_invisible) else painterResource(R.drawable.ic_visible),
                                 contentDescription = null,
                                 tint = MaterialTheme.colorScheme.primary
                             )
@@ -68,9 +67,9 @@ fun TasksTopAppBar(
             },
             actions = {
                 if (topAppBarCollapsed) {
-                    IconButton(onClick = onToggleShowCompleted) {
+                    IconButton(onClick = onToggleHideCompleted) {
                         Icon(
-                            painter = if (hideCompleted) painterResource(R.drawable.ic_invisible) else painterResource(R.drawable.ic_visible),
+                            painter = if (isHideCompletedEnabled) painterResource(R.drawable.ic_invisible) else painterResource(R.drawable.ic_visible),
                             contentDescription = null,
                             tint = MaterialTheme.colorScheme.primary
                         )

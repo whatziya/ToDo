@@ -91,6 +91,6 @@ fun showDatePickerDialog(
     )
 
     // Set minimum date to prevent past dates selection
-    datePickerDialog.datePicker.minDate = calendar.timeInMillis
+    datePickerDialog.datePicker.minDate = 0
     datePickerDialog.show()
 }
