@@ -119,14 +119,12 @@ fun ToDoContainer(
                     textDecoration = if (data.isCompleted) TextDecoration.LineThrough else TextDecoration.None,
                     color = if (data.isCompleted) MaterialTheme.colorScheme.onBackground else MaterialTheme.colorScheme.onPrimary
                 )
-                data.deadline?.let { deadline ->
-                    Text(
-                        text = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault()).format(deadline),
-                        style = MaterialTheme.typography.labelSmall,
-                        color = MaterialTheme.colorScheme.onSurface,
-                        modifier = Modifier.padding(top = 4.dp)
-                    )
-                }
+                Text(
+                    text = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault()).format(data.deadline),
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.onSurface,
+                    modifier = Modifier.padding(top = 4.dp)
+                )
             }
         }
         Spacer(modifier = Modifier.weight(1f))
