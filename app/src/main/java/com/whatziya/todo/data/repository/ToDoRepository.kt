@@ -1,6 +1,6 @@
 package com.whatziya.todo.data.repository
 
-import com.whatziya.todo.data.db.ToDoEntity
+import com.whatziya.todo.data.dto.ToDoEntity
 import kotlinx.coroutines.flow.Flow
 
 interface ToDoRepository {

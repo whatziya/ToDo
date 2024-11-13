@@ -1,7 +1,7 @@
 package com.whatziya.todo.data.source.local
 
 import com.whatziya.todo.data.db.ToDoDao
-import com.whatziya.todo.data.db.ToDoEntity
+import com.whatziya.todo.data.dto.ToDoEntity
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 class ToDoLocalDataSourceImpl @Inject constructor(

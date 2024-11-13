@@ -1,6 +1,6 @@
 package com.whatziya.todo.data.source.local
 
-import com.whatziya.todo.data.db.ToDoEntity
+import com.whatziya.todo.data.dto.ToDoEntity
 import kotlinx.coroutines.flow.Flow
 
 interface ToDoLocalDataSource {

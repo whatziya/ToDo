@@ -1,4 +1,4 @@
-package com.whatziya.todo.data.db
+package com.whatziya.todo.data.dto
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
@@ -14,7 +14,7 @@ data class ToDoEntity(
     @ColumnInfo(name = "importance")
     val importance : Int,
     @ColumnInfo(name = "deadline")
-    val deadline : Long? = null,
+    val deadline : Long,
     @ColumnInfo(name = "is_completed")
     val isCompleted : Boolean,
     @ColumnInfo(name = "created_at")

@@ -41,14 +41,14 @@ fun HomeTopAppBar(
                 Row {
                     Column(Modifier.padding(start = 56.dp).weight(1f)) {
                         Text(
-                            "My Tasks",
+                            "Мои дела",
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis,
                             style = MaterialTheme.typography.titleLarge
                         )
                         if (topAppBarExpanded) {
                             Text(
-                                "Completed - $completedTaskCount",
+                                "Выполнено - $completedTaskCount",
                                 style = MaterialTheme.typography.bodyMedium,
                                 color = MaterialTheme.colorScheme.onTertiary
                             )

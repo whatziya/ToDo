@@ -18,5 +18,5 @@ class LocalEditorUseCase @Inject constructor(
 
     suspend fun updateItem(item: ToDoUIModel) = repository.updateItem(mapper.toDTO(item))
 
-    suspend fun deleteItem(item: ToDoUIModel) = repository.deleteItem(mapper.toDTO(item))
+    suspend fun deleteItem(item: String) = repository.deleteItemById(item)
 }

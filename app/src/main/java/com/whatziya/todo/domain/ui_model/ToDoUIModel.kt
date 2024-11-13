@@ -6,7 +6,7 @@ data class ToDoUIModel(
     val id : String,
     var text: String,
     var importance : Int,
-    val deadline : Date? = null,
+    val deadline : Date,
     val isCompleted : Boolean,
     val createdAt : Date,
     var modifiedAt : Date

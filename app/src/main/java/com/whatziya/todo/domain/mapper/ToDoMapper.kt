@@ -1,6 +1,6 @@
 package com.whatziya.todo.domain.mapper
 
-import com.whatziya.todo.data.db.ToDoEntity
+import com.whatziya.todo.data.dto.ToDoEntity
 import com.whatziya.todo.domain.ui_model.ToDoUIModel
 import java.util.Date
 import javax.inject.Inject
@@ -13,7 +13,7 @@ class ToDoLocalMapper @Inject constructor() : BaseMapper<ToDoEntity, ToDoUIModel
             id = id,
             text = text,
             importance = importance,
-            deadline = Date(deadline?: 0),
+            deadline = Date(),
             isCompleted = isCompleted,
             createdAt = Date(createdAt),
             modifiedAt = Date(modifiedAt)
@@ -25,7 +25,7 @@ class ToDoLocalMapper @Inject constructor() : BaseMapper<ToDoEntity, ToDoUIModel
             id = id,
             text = text,
             importance = importance,
-            deadline = deadline?.time,
+            deadline = deadline.time,
             isCompleted = isCompleted,
             createdAt = createdAt.time,
             modifiedAt = modifiedAt.time

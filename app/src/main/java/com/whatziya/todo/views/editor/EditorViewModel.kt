@@ -23,7 +23,7 @@ class TaskEditorViewModel @Inject constructor(
             id = generateTaskId(),
             text = "",
             importance = importanceLevel.intValue,
-            deadline = null,
+            deadline = Date(),
             isCompleted = false,
             createdAt = Date(System.currentTimeMillis()),
             modifiedAt = Date(System.currentTimeMillis())
@@ -54,7 +54,7 @@ class TaskEditorViewModel @Inject constructor(
 
     fun removeTask() {
         taskData.value.let {
-            viewModelScope.launch { taskEditorUseCase.deleteItem(it) }
+            viewModelScope.launch { taskEditorUseCase.deleteItem(it.id) }
         }
     }
 
