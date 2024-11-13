@@ -65,7 +65,7 @@ fun TaskListView(
                         .padding(start = 56.dp, top = 14.dp, bottom = 24.dp)
                 ) {
                     Text(
-                        "New Task",
+                        "Новое дело",
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onTertiary
                     )
